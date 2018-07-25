@@ -6,6 +6,12 @@ function love.load()
   ships = {}
 end
 
+function love.update(dt)
+  each(function (ship)
+    update_ship(dt, ship)
+  end, ships)
+end
+
 function love.draw()
   love.graphics.rectangle("line", ship_factory.x, ship_factory.y, ship_factory.width, ship_factory.height)
   love.graphics.print("Ship count: " .. #ships)
@@ -23,4 +29,9 @@ end
 
 function draw_ship(ship)
   love.graphics.circle("line", ship.x, ship.y, 10)
+end
+
+function update_ship(t, ship)
+  ship.x = ship.x + t * 50 * math.cos(ship.angle)
+  ship.y = ship.y + t * 50 * math.sin(ship.angle)
 end
