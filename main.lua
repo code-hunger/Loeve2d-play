@@ -1,4 +1,4 @@
-require "fun"()
+local fun = require "fun"
 
 local ship_factory = require "./ship_factory"
 local pilots = require "./pilots"
@@ -25,7 +25,7 @@ function love.update(dt)
     next_ship = next_ship - dt
   end
 
-  each(function(ship)
+  fun.each(function(ship)
     ship:update(dt)
   end, ships)
 end
@@ -34,7 +34,7 @@ function love.draw()
   love.graphics.rectangle("line", ship_factory.x, ship_factory.y, ship_factory.width, ship_factory.height)
   love.graphics.print("Ship count: " .. #ships)
 
-  each(draw_ship, ships)
+  fun.each(draw_ship, ships)
 end
 
 function love.keypressed(key)
