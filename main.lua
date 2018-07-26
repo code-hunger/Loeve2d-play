@@ -26,6 +26,8 @@ function love.keypressed(key)
     table.insert(ships, ship)
   elseif key == "-" or key == "kp-" then
     table.remove(ships, 1)
+  elseif key == "escape" then
+    love.event.quit()
   end
 end
 
