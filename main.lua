@@ -11,8 +11,17 @@ function love.load()
   ships = {}
 end
 
+local next_ship = 0.5
+
 function love.update(dt)
-  each(function (ship)
+  if next_ship <= 0 then
+    next_ship = 1
+    add_idle_ship(ships)
+  else
+    next_ship = next_ship - dt
+  end
+
+  each(function(ship)
     ship:update(dt)
   end, ships)
 end
