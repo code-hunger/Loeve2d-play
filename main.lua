@@ -7,11 +7,15 @@ local speed = 100
 ship_factory.x = 300
 ship_factory.y = 400
 
+local ships
+
 function love.load()
   ships = {}
 end
 
 local next_ship = 0.5
+
+local set_idle_ship, add_idle_ship, update_idle_ship, draw_ship
 
 function love.update(dt)
   if next_ship <= 0 then
@@ -46,8 +50,8 @@ end
 function draw_ship(ship)
   love.graphics.circle("line", ship.x, ship.y, 10)
   if ship.idle_state then
-    c = ship.idle_state.center
-    t = ship.idle_state.target
+    local c = ship.idle_state.center
+    local t = ship.idle_state.target
     love.graphics.circle("line", c.x, c.y, ship.idle_state.radius)
     love.graphics.circle("fill", t.x, t.y, 5)
   end
@@ -72,9 +76,9 @@ function set_idle_ship(ship)
   ship.update = update_idle_ship
 end
 
-function add_idle_ship(ships)
+function add_idle_ship()
   if #ships >= 50 then table.remove(ships, 1) end
-  ship = ship_factory:produce_ship()
+  local ship = ship_factory:produce_ship()
   set_idle_ship(ship)
   table.insert(ships, ship)
 end
