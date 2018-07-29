@@ -83,7 +83,7 @@ function set_idle_ship(ship)
       y = 300;
     }
   }
-  ship.update = update_idle_ship
+  ship.pilot = pilots.idle
 end
 
 function add_idle_ship()
