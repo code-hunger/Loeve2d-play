@@ -20,14 +20,14 @@ function row_formation(ships, i, leader)
 end
 
 function circle_formation(radius, arc, ships, i, leader)
-  local angle = i / #ships * arc
+  local angle = i / #ships * arc + (math.pi * 2 - arc) /2
   return leader.x + math.sin(angle) * radius, leader.y + math.cos(angle) * radius
 end
 
 function love.load()
   ships = {}
   squadron:set_formation(function (ships, i, leader)
-    return circle_formation(150, 1.5 * math.pi, ships, i, leader)
+    return circle_formation(150, 1 * math.pi, ships, i, leader)
   end)
 end
 
