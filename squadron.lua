@@ -8,10 +8,6 @@ function squadron:add_ship(ship)
   table.insert(self.ships, ship)
 end
 
-function squadron.formation(ships, i, leader)
-  return leader.x + i * 30, leader.y
-end
-
 function squadron:set_formation(formation)
   self.formation = formation
 end

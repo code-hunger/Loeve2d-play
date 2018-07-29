@@ -11,8 +11,24 @@ local ships
 
 local squadron = require "./squadron"
 
+function sine_formation(ships, i, leader)
+  return leader.x + 30 * i , leader.y+ 30 * math.sin(i * math . pi / 5)
+end
+
+function row_formation(ships, i, leader)
+  return leader.x + i * 30, leader.y
+end
+
+function circle_formation(radius, arc, ships, i, leader)
+  local angle = i / #ships * arc
+  return leader.x + math.sin(angle) * radius, leader.y + math.cos(angle) * radius
+end
+
 function love.load()
   ships = {}
+  squadron:set_formation(function (ships, i, leader)
+    return circle_formation(150, 1.5 * math.pi, ships, i, leader)
+  end)
 end
 
 local next_ship = 0.5
