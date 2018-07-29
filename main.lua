@@ -87,7 +87,8 @@ function set_idle_ship(ship)
 end
 
 function add_idle_ship()
-  if #ships >= 50 then table.remove(ships, 1) end
+  while #ships >= 50 do table.remove(ships, 1) end
+
   local ship = ship_factory:produce_ship()
   set_idle_ship(ship)
   table.insert(ships, ship)
