@@ -16,13 +16,12 @@ local function idle(x, y, idle_state, delta_time)
   local target_x = center_x + idle_state.radius * math.cos(new_angle)
   local target_y = center_y + idle_state.radius * math.sin(new_angle)
 
-  idle_state.target = { x = target_x, y = target_y }
-
-  return angle2(target_x, target_y, x, y)
+  return { x = target_x, y = target_y }
 end
 
 function pilots.idle(ship, t)
-  return idle(ship.x, ship.y, ship.idle_state, t)
+  ship.target = idle(ship.x, ship.y, ship.idle_state, t)
+  return angle2(ship.target.x, ship.target.y, ship.x, ship.y)
 end
 
 return pilots

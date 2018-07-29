@@ -26,6 +26,7 @@ function love.update(dt)
   end
 
   fun.each(function(ship)
+    ship.angle = ship:pilot(dt)
     ship.x, ship.y = update_ship(ship, dt)
   end, ships)
 end
@@ -53,19 +54,24 @@ function draw_ship(ship)
   love.graphics.circle("line", ship.x, ship.y, 10)
   if ship.idle_state then
     local c = ship.idle_state.center
-    local t = ship.idle_state.target
     love.graphics.setLineWidth(1)
     love.graphics.setColor(1, 1, 1)
     love.graphics.circle("line", c.x, c.y, ship.idle_state.radius)
+  end
+
+  if ship.target then
+    local t = ship.target
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.circle("fill", t.x, t.y, 5)
     love.graphics.line(ship.x, ship.y, t.x, t.y)
   end
 end
 
 function update_ship(ship, t)
-  local angle = ship:pilot(t)
-  return ship.x - t * speed * math.cos(angle),
-         ship.y - t * speed * math.sin(angle)
+  assert(ship.angle, "Angle is nil")
+  return ship.x - t * speed * math.cos(ship.angle),
+    ship.y - t * speed * math.sin(ship.angle)
 end
 
 function set_idle_ship(ship)
