@@ -48,12 +48,17 @@ function love.keypressed(key)
 end
 
 function draw_ship(ship)
+  love.graphics.setColor(0.9, 0.2, 0.2)
+  love.graphics.setLineWidth(4)
   love.graphics.circle("line", ship.x, ship.y, 10)
   if ship.idle_state then
     local c = ship.idle_state.center
     local t = ship.idle_state.target
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.circle("line", c.x, c.y, ship.idle_state.radius)
     love.graphics.circle("fill", t.x, t.y, 5)
+    love.graphics.line(ship.x, ship.y, t.x, t.y)
   end
 end
 
