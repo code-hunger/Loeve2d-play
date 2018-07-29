@@ -26,7 +26,7 @@ function love.update(dt)
   end
 
   fun.each(function(ship)
-    ship:update(dt)
+    ship.x, ship.y = update_ship(ship, dt)
   end, ships)
 end
 
@@ -62,11 +62,10 @@ function draw_ship(ship)
   end
 end
 
-function update_idle_ship(ship, t)
-  local angle = pilots.idle(ship.x, ship.y, ship.idle_state, t)
-
-  ship.x = ship.x - t * speed * math.cos(angle)
-  ship.y = ship.y - t * speed * math.sin(angle)
+function update_ship(ship, t)
+  local angle = ship:pilot(t)
+  return ship.x - t * speed * math.cos(angle),
+         ship.y - t * speed * math.sin(angle)
 end
 
 function set_idle_ship(ship)
