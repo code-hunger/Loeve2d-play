@@ -1,10 +1,15 @@
 local fun = require "fun"
 
 local squadron = {
-  ships = {}
+  max_ships = 10;
+  ships = {};
 }
 
 function squadron:add_ship(ship)
+  while self.max_ships > 0 and #self.ships >= self.max_ships do
+    table.remove(self.ships, 1)
+  end
+
   table.insert(self.ships, ship)
 end
 
