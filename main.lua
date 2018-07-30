@@ -1,7 +1,7 @@
 local fun = require "fun"
 
 local ship_factory = require "./ship_factory"
-local pilots = require "./pilots"
+local Ship = require "./ship"
 local speed = 100
 
 ship_factory.x = 300
@@ -19,8 +19,6 @@ end
 
 local next_ship = 0.5
 
-local set_idle_ship, add_idle_ship, update_idle_ship, draw_ship
-
 function love.update(dt)
   if next_ship <= 0 then
     next_ship = 1
@@ -33,11 +31,11 @@ function love.update(dt)
 
   fun.each(function(ship)
     ship.angle = ship:pilot(dt)
-    ship.x, ship.y = update_ship(ship, dt)
+    ship.x, ship.y = Ship.update(ship, dt, speed)
   end, ships)
 
   fun.each(function(ship)
-    ship.x, ship.y = update_ship(ship, dt)
+    ship.x, ship.y = Ship.update(ship, dt, speed)
   end, squadron.ships)
 end
 
@@ -45,8 +43,8 @@ function love.draw()
   love.graphics.rectangle("line", ship_factory.x, ship_factory.y, ship_factory.width, ship_factory.height)
   love.graphics.print("Ship count: " .. #ships)
 
-  fun.each(draw_ship, ships)
-  fun.each(draw_ship, squadron.ships)
+  fun.each(Ship.draw, ships)
+  fun.each(Ship.draw, squadron.ships)
 end
 
 function love.keypressed(key)
@@ -59,49 +57,11 @@ function love.keypressed(key)
   end
 end
 
-function draw_ship(ship)
-  love.graphics.setColor(0.9, 0.2, 0.2)
-  love.graphics.setLineWidth(4)
-  love.graphics.circle("line", ship.x, ship.y, 10)
-  if ship.idle_state then
-    local c = ship.idle_state.center
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.circle("line", c.x, c.y, ship.idle_state.radius)
-  end
-
-  if ship.target then
-    local t = ship.target
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.circle("fill", t.x, t.y, 5)
-    love.graphics.line(ship.x, ship.y, t.x, t.y)
-  end
-end
-
-function update_ship(ship, t)
-  assert(ship.angle, "Angle is nil")
-  return ship.x - t * speed * math.cos(ship.angle),
-    ship.y - t * speed * math.sin(ship.angle)
-end
-
-function set_idle_ship(ship)
-  local radius = math.floor(math.random() * 15) * 20 + 30
-  ship.idle_state = {
-    radius = radius;
-    center = {
-      x = 300;
-      y = 300;
-    }
-  }
-  ship.pilot = pilots.idle
-end
-
 function add_idle_ship()
   while #ships >= 50 do table.remove(ships, 1) end
 
   local ship = ship_factory:produce_ship()
-  set_idle_ship(ship)
+  Ship.set_idle(ship)
   table.insert(ships, ship)
 end
 
@@ -110,7 +70,7 @@ function add_squadron_ship()
   if squadron.leader then
     squadron:add_ship(ship)
   else
-    set_idle_ship(ship)
+    Ship.set_idle(ship)
     ship.idle_state.radius = 130
     squadron.leader = ship
     table.insert(ships, ship)
