@@ -22,7 +22,6 @@ function Ship:draw()
 end
 
 function Ship:update(delta_time, speed)
-  assert(self.angle, "Angle is nil")
   return self.x - delta_time * speed * math.cos(self.angle),
     self.y - delta_time * speed * math.sin(self.angle)
 end
