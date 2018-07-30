@@ -7,10 +7,14 @@ local squadron = {
 
 function squadron:add_ship(ship)
   while self.max_ships > 0 and #self.ships >= self.max_ships do
-    table.remove(self.ships, 1)
+    self:remove_ship()
   end
 
   table.insert(self.ships, ship)
+end
+
+function squadron:remove_ship(ship)
+  table.remove(self.ships, ship or 1)
 end
 
 function squadron:set_formation(formation)

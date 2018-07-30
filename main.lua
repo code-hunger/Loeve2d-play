@@ -51,7 +51,7 @@ function love.keypressed(key)
   if key == "+" or key == "kp+" then
     add_squadron_ship()
   elseif key == "-" or key == "kp-" then
-    table.remove(squadron.ships, 1)
+    squadron.remove_ship()
   elseif key == "escape" then
     love.event.quit()
   end
