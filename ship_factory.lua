@@ -7,6 +7,7 @@ local ship_factory = {
 
 function ship_factory:produce_ship()
   return {
+    speed = 100,
     angle = 0,
     x = self.x + self.width / 2,
     y = self.y + self.height / 2,

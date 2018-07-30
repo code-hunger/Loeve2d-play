@@ -2,7 +2,6 @@ local fun = require "fun"
 
 local ship_factory = require "./ship_factory"
 local Ship = require "./ship"
-local speed = 100
 
 local ship_leader, add_squadron_ship
 
@@ -27,11 +26,11 @@ function love.update(dt)
 
   if ship_leader then
     ship_leader.angle = ship_leader:pilot(dt)
-    ship_leader.x, ship_leader.y = Ship.update(ship_leader, dt, speed)
+    ship_leader.x, ship_leader.y = Ship.update(ship_leader, dt)
   end
 
   fun.each(function(ship)
-    ship.x, ship.y = Ship.update(ship, dt, speed)
+    ship.x, ship.y = Ship.update(ship, dt)
   end, squadron.ships)
 end
 

@@ -21,9 +21,9 @@ function Ship:draw()
   end
 end
 
-function Ship:update(delta_time, speed)
-  return self.x - delta_time * speed * math.cos(self.angle),
-    self.y - delta_time * speed * math.sin(self.angle)
+function Ship:update(delta_time)
+  return self.x - delta_time * self.speed * math.cos(self.angle),
+    self.y - delta_time * self.speed * math.sin(self.angle)
 end
 
 function Ship:set_idle(radius, center)
