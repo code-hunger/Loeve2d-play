@@ -7,13 +7,12 @@ local speed = 100
 ship_factory.x = 300
 ship_factory.y = 400
 
-local ships
+local ship_leader
 
 local squadron = require "./squadron"
 local formations = require "./formations"
 
 function love.load()
-  ships = {}
   squadron:set_formation(formations.row)
 end
 
@@ -22,17 +21,17 @@ local next_ship = 0.5
 function love.update(dt)
   if next_ship <= 0 then
     next_ship = 1
-    add_squadron_ship(ships)
+    add_squadron_ship()
   else
     next_ship = next_ship - dt
   end
 
   squadron:update()
 
-  fun.each(function(ship)
-    ship.angle = ship:pilot(dt)
-    ship.x, ship.y = Ship.update(ship, dt, speed)
-  end, ships)
+  if ship_leader then
+    ship_leader.angle = ship_leader:pilot(dt)
+    ship_leader.x, ship_leader.y = Ship.update(ship_leader, dt, speed)
+  end
 
   fun.each(function(ship)
     ship.x, ship.y = Ship.update(ship, dt, speed)
@@ -41,9 +40,10 @@ end
 
 function love.draw()
   ship_factory:draw()
-  love.graphics.print("Ship count: " .. #ships)
 
-  fun.each(Ship.draw, ships)
+  if ship_leader then
+    Ship.draw(ship_leader)
+  end
   fun.each(Ship.draw, squadron.ships)
 end
 
@@ -51,18 +51,10 @@ function love.keypressed(key)
   if key == "+" or key == "kp+" then
     add_squadron_ship()
   elseif key == "-" or key == "kp-" then
-    table.remove(ships, 1)
+    table.remove(squadron.ships, 1)
   elseif key == "escape" then
     love.event.quit()
   end
-end
-
-function add_idle_ship()
-  while #ships >= 50 do table.remove(ships, 1) end
-
-  local ship = ship_factory:produce_ship()
-  Ship.set_idle(ship)
-  table.insert(ships, ship)
 end
 
 function add_squadron_ship()
@@ -70,9 +62,9 @@ function add_squadron_ship()
   if squadron.leader then
     squadron:add_ship(ship)
   else
+    ship_leader = ship
+    squadron.leader = ship
     Ship.set_idle(ship)
     ship.idle_state.radius = 130
-    squadron.leader = ship
-    table.insert(ships, ship)
   end
 end
