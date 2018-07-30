@@ -16,7 +16,9 @@ function sine_formation(ships, i, leader)
 end
 
 function row_formation(ships, i, leader)
-  return leader.x + i * 30, leader.y
+  local previous
+  if i == 1 then previous = leader else previous = ships[i-1] end
+  return previous.x + 30 * math.cos(previous.angle), previous.y + 30 * math.sin(previous.angle)
 end
 
 function circle_formation(radius, arc, ships, i, leader)
@@ -26,9 +28,7 @@ end
 
 function love.load()
   ships = {}
-  squadron:set_formation(function (ships, i, leader)
-    return circle_formation(150, 1 * math.pi, ships, i, leader)
-  end)
+  squadron:set_formation(row_formation)
 end
 
 local next_ship = 0.5
@@ -125,7 +125,7 @@ function add_squadron_ship()
     squadron:add_ship(ship)
   else
     set_idle_ship(ship)
-    ship.idle_state.radius = 30
+    ship.idle_state.radius = 130
     squadron.leader = ship
     table.insert(ships, ship)
   end
