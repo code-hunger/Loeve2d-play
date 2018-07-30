@@ -64,7 +64,6 @@ function add_squadron_ship()
   else
     ship_leader = ship
     squadron.leader = ship
-    Ship.set_idle(ship)
-    ship.idle_state.radius = 130
+    Ship.set_idle(ship, 130)
   end
 end
