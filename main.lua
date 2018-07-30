@@ -40,7 +40,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.rectangle("line", ship_factory.x, ship_factory.y, ship_factory.width, ship_factory.height)
+  ship_factory:draw()
   love.graphics.print("Ship count: " .. #ships)
 
   fun.each(Ship.draw, ships)

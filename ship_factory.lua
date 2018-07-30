@@ -13,4 +13,8 @@ function ship_factory:produce_ship()
     }
 end
 
+function ship_factory:draw()
+  love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+end
+
 return ship_factory
