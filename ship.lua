@@ -27,7 +27,7 @@ function Ship:update(delta_time, speed)
 end
 
 function Ship:set_idle(radius, center)
-  local radius = radius or math.floor(math.random() * 15) * 20 + 30
+  radius = radius or math.floor(math.random() * 15) * 20 + 30
   self.idle_state = {
     radius = radius;
     center = center or {

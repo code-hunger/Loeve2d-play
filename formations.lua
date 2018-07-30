@@ -1,6 +1,6 @@
 local formations = {}
 
-function formations.sine(ships, i, leader)
+function formations.sine(_, i, leader)
   return leader.x + 30 * i,
          leader.y + 30 * math.sin(i * math.pi / 5)
 end

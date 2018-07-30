@@ -1,5 +1,3 @@
-local fun = require "fun"
-
 local squadron = {
   max_ships = 10;
   ships = {};
