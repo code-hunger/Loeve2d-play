@@ -6,7 +6,7 @@ local squadron = {
 }
 
 function squadron:add_ship(ship)
-  while self.max_ships > 0 and #self.ships >= self.max_ships do
+  if self.max_ships > 0 and #self.ships >= self.max_ships then
     self:remove_ship()
   end
 
