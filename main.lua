@@ -4,9 +4,6 @@ local ship_factory = require "./ship_factory"
 local Ship = require "./ship"
 local speed = 100
 
-ship_factory.x = 300
-ship_factory.y = 400
-
 local ship_leader
 
 local squadron = require "./squadron"
