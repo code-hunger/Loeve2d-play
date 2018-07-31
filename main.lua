@@ -3,16 +3,12 @@ local fun = require "fun"
 local ship_factory = require "./ship_factory"
 local Ship = require "./ship"
 
-local ship_leader, add_squadron_ship
-
 local squadron = require "./squadron"
 local formations = require "./formations"
-
-function love.load()
-  squadron:set_formation(formations.row)
-end
+squadron:set_formation(formations.row)
 
 local next_ship = 0.5
+local ship_leader, add_squadron_ship
 
 function love.update(dt)
   if next_ship <= 0 then
