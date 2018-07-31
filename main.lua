@@ -56,6 +56,6 @@ function add_squadron_ship()
   else
     ship_leader = ship
     squadron.leader = ship
-    Ship.set_square_pilot(ship, 130)
+    Ship.set_square_pilot(ship, 300)
   end
 end
