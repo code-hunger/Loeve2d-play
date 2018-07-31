@@ -1,4 +1,5 @@
 local pilots = {}
+local PI = math.pi
 
 local function deg(angle) return angle * 180 / math.pi end
 
@@ -29,16 +30,30 @@ end
 function pilots.square(ship, _)
   local center_x = ship.square_state.center.x
   local center_y = ship.square_state.center.y
-  local square_a = ship.square_state.a
+  local a = ship.square_state.a / 2
 
-  local current_angle = angle2(ship.x, ship.y, center_x, center_y) + math.pi
-  print(deg(current_angle))
+  local current_angle = angle2(ship.x, ship.y, center_x, center_y)
+  local positive_angle = current_angle + PI -- for easier maths bellow
 
-  if current_angle < math.pi / 2 then
-    return angle2(center_x - square_a / 2, center_y - square_a / 2,ship.x, ship.y)
-  elseif current_angle < math.pi then
-    return angle2(center_x + square_a / 2, center_y - square_a / 2,ship.x, ship.y)
-  else print("Unimplemented quadrant") return -math.pi / 4 end
+  -- Down Right
+  if positive_angle > PI * 7 / 4 or positive_angle < PI / 4 then
+    return angle2(center_x + a, center_y + a, ship.x, ship.y)
+  end
+
+  -- Down Left
+  if positive_angle < PI * 3 / 4 then
+    return angle2(center_x - a, center_y + a, ship.x, ship.y)
+  end
+
+  -- Up Left
+  if positive_angle < PI * 5 / 4 then
+    return angle2(center_x - a, center_y - a, ship.x, ship.y)
+  end
+
+  -- Up Right
+  if positive_angle < PI * 7 / 4 then
+    return angle2(center_x + a, center_y - a, ship.x, ship.y)
+  end
 end
 
 return pilots
