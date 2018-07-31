@@ -8,7 +8,7 @@ local formations = require "./formations"
 squadron:set_formation(formations.row)
 
 local next_ship = 0.5
-local ship_leader, add_squadron_ship
+local add_squadron_ship
 
 function love.update(dt)
   if next_ship <= 0 then
@@ -20,9 +20,10 @@ function love.update(dt)
 
   squadron:update()
 
-  if ship_leader then
-    ship_leader.angle = ship_leader:pilot(dt)
-    ship_leader.x, ship_leader.y = Ship.update(ship_leader, dt)
+  if squadron.leader then
+    local leader = squadron.leader
+    leader.angle = leader:pilot(dt)
+    leader.x, leader.y = Ship.update(leader, dt)
   end
 
   fun.each(function(ship)
@@ -33,8 +34,8 @@ end
 function love.draw()
   ship_factory:draw()
 
-  if ship_leader then
-    Ship.draw(ship_leader, {0.2, 0.2, 0.9})
+  if squadron.leader then
+    Ship.draw(squadron.leader, {0.2, 0.2, 0.9})
   end
   fun.each(Ship.draw, squadron.ships)
 end
@@ -58,7 +59,6 @@ function add_squadron_ship()
   if squadron.leader then
     squadron:add_ship(ship)
   else
-    ship_leader = ship
     squadron.leader = ship
     Ship.set_square_pilot(ship, 300)
   end
