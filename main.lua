@@ -12,7 +12,7 @@ local ship_leader, add_squadron_ship
 
 function love.update(dt)
   if next_ship <= 0 then
-    next_ship = 0.3
+    next_ship = 0.2
     add_squadron_ship()
   else
     next_ship = next_ship - dt
@@ -46,11 +46,15 @@ function love.keypressed(key)
     squadron:remove_ship()
   elseif key == "escape" then
     love.event.quit()
+  elseif key == "space" then
+    ship_factory:toggle_pause()
   end
 end
 
 function add_squadron_ship()
   local ship = ship_factory:produce_ship()
+  if not ship then return false end -- no ship produced :(
+
   if squadron.leader then
     squadron:add_ship(ship)
   else
