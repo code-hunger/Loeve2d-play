@@ -12,6 +12,12 @@ function Ship:draw()
     love.graphics.circle("line", c.x, c.y, self.idle_state.radius)
   end
 
+  if self.square_state then
+    local c = self.square_state.center
+    local a = self.square_state.a / 2
+    love.graphics.rectangle("line", c.x - a, c.y - a, c.x + a, c.y + a )
+  end
+
   if self.target then
     local t = self.target
     love.graphics.setLineWidth(1)
@@ -36,6 +42,18 @@ function Ship:set_idle(radius, center)
     }
   }
   self.pilot = pilots.idle
+end
+
+function Ship:set_square_pilot(square_a, center)
+  square_a = square_a or math.floor(math.random() * 15) * 5 + 30
+  self.square_state = {
+    a = square_a;
+    center = center or {
+      x = 130;
+      y = 130;
+    }
+  }
+  self.pilot = pilots.square
 end
 
 return Ship

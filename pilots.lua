@@ -1,5 +1,7 @@
 local pilots = {}
 
+local function deg(angle) return angle * 180 / math.pi end
+
 local function angle2(x1, y1, x2, y2) return math.atan2(y2-y1, x2-x1) end
 
 local function pytag(x1, y1, x2, y2) return ((x2-x1) ^ 2 + (y2-y1) ^ 2) ^ 0.5 end
@@ -22,6 +24,21 @@ end
 function pilots.idle(ship, t)
   ship.target = idle(ship.x, ship.y, ship.idle_state, t)
   return angle2(ship.target.x, ship.target.y, ship.x, ship.y)
+end
+
+function pilots.square(ship, _)
+  local center_x = ship.square_state.center.x
+  local center_y = ship.square_state.center.y
+  local square_a = ship.square_state.a
+
+  local current_angle = angle2(ship.x, ship.y, center_x, center_y) + math.pi
+  print(deg(current_angle))
+
+  if current_angle < math.pi / 2 then
+    return angle2(center_x - square_a / 2, center_y - square_a / 2,ship.x, ship.y)
+  elseif current_angle < math.pi then
+    return angle2(center_x + square_a / 2, center_y - square_a / 2,ship.x, ship.y)
+  else print("Unimplemented quadrant") return -math.pi / 4 end
 end
 
 return pilots
