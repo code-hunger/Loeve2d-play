@@ -21,7 +21,7 @@ function squadron:set_formation(formation)
   self.formation = formation
 end
 
-function squadron:update()
+function squadron:update(dt)
   local ships = self.ships
   for i, ship in ipairs(ships) do
     local x, y = self.formation(ships, i)
@@ -32,7 +32,8 @@ function squadron:update()
       y = x * math.sin(angle) + y * math.cos(angle) + self.leader.y
     }
 
-    ship.angle = utils.angle2(ship.target, ship)
+    local requested_angle = utils.angle2(ship.target, ship)
+    ship.angle = utils.constrict_rotation(requested_angle, ship.angle, dt)
   end
 end
 

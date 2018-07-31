@@ -18,7 +18,7 @@ function love.update(dt)
     next_ship = next_ship - dt
   end
 
-  squadron:update()
+  squadron:update(dt)
 
   if squadron.leader then
     local leader = squadron.leader

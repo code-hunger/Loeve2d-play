@@ -31,4 +31,14 @@ function utils.rand(a, b, c)
   return math.floor(math.random() * (b - a) / c) * c + a
 end
 
+function utils.to_range(x, from, to)
+  if x < from then return from
+  elseif x > to then return to
+  else return x end
+end
+
+function utils.constrict_rotation(x, old, dt)
+  return utils.to_range(x, old - math.pi * dt, old + math.pi * dt)
+end
+
 return utils
