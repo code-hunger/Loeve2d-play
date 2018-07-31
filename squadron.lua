@@ -1,5 +1,5 @@
 local squadron = {
-  max_ships = 10;
+  max_ships = 20;
   ships = {};
 }
 

@@ -12,7 +12,7 @@ local ship_leader, add_squadron_ship
 
 function love.update(dt)
   if next_ship <= 0 then
-    next_ship = 1
+    next_ship = 0.3
     add_squadron_ship()
   else
     next_ship = next_ship - dt
@@ -34,7 +34,7 @@ function love.draw()
   ship_factory:draw()
 
   if ship_leader then
-    Ship.draw(ship_leader)
+    Ship.draw(ship_leader, {0.2, 0.2, 0.9})
   end
   fun.each(Ship.draw, squadron.ships)
 end
