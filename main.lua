@@ -5,7 +5,10 @@ local Ship = require "./ship"
 
 local squadron = require "./squadron"
 local formations = require "./formations"
-squadron:set_formation(formations.irow)
+local pilots = require "./pilots"
+squadron:set_formation(function(ships, i)
+  return formations.circle(150, math.pi, ships, i)
+end)
 
 local next_ship = 0.5
 local add_squadron_ship
@@ -65,6 +68,7 @@ function add_squadron_ship()
   if squadron.leader then
     squadron:add_ship(ship)
   else
+    ship.speed = ship.speed * 0.4
     squadron.leader = ship
     Ship.set_square_pilot(ship, 300)
   end

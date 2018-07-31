@@ -10,7 +10,7 @@ function ship_factory:produce_ship()
   if self.paused then return end
 
   return {
-    speed = 200,
+    speed = 40,
     angle = 0,
     x = self.x + self.width / 2,
     y = self.y + self.height / 2,
