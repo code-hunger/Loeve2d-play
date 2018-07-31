@@ -16,4 +16,17 @@ function utils.pytag(x1, y1, x2, y2) return ((x2-x1) ^ 2 + (y2-y1) ^ 2) ^ 0.5 en
 
 function utils.angle2(x1, y1, x2, y2) return math.atan2(y2-y1, x2-x1) end
 
+function utils.rand(a, b, c)
+  if a == nil then return math.random() end
+
+  -- from 0 to A, floating point numbers
+  if b == nil then return math.random() * a end
+
+  -- from A to B, only integers
+  if c == nil then return math.floor(math.random() * (b - a)) + a end
+
+  -- from A to B, step = C
+  return math.floor(math.random() * (b - a) / c) * c + a
+end
+
 return utils

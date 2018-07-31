@@ -1,4 +1,5 @@
 local pilots = require "./pilots"
+local utils = require "./utils"
 local Ship = {}
 
 function Ship:draw(color)
@@ -24,7 +25,7 @@ function Ship:draw(color)
     local t = self.target
     love.graphics.setLineWidth(1)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.circle("fill", t.x, t.y, 5)
+    love.graphics.circle("fill", t.x, t.y, 2)
     love.graphics.line(self.x, self.y, t.x, t.y)
   end
 end
@@ -35,7 +36,7 @@ function Ship:update(delta_time)
 end
 
 function Ship:set_idle(radius, center)
-  radius = radius or math.floor(math.random() * 15) * 20 + 30
+  radius = radius or utils.rand(30, 300, 20)
   self.idle_state = {
     radius = radius;
     center = center or {
@@ -47,7 +48,7 @@ function Ship:set_idle(radius, center)
 end
 
 function Ship:set_square_pilot(square_a, center)
-  square_a = square_a or math.floor(math.random() * 15) * 5 + 30
+  square_a = square_a or utils.rand(50, 300, 15)
   self.square_state = {
     a = square_a;
     center = center or {
