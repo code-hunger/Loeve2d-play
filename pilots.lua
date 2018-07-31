@@ -27,33 +27,39 @@ function pilots.idle(ship, t)
   return angle2(ship.target.x, ship.target.y, ship.x, ship.y)
 end
 
-function pilots.square(ship, _)
-  local center_x = ship.square_state.center.x
-  local center_y = ship.square_state.center.y
-  local a = ship.square_state.a / 2
-
-  local current_angle = angle2(ship.x, ship.y, center_x, center_y)
+local function next_square_target(current_angle)
   local positive_angle = current_angle + PI -- for easier maths bellow
 
   -- Down Right
   if positive_angle > PI * 7 / 4 or positive_angle < PI / 4 then
-    return angle2(center_x + a, center_y + a, ship.x, ship.y)
+    return 1, 1
   end
 
   -- Down Left
   if positive_angle < PI * 3 / 4 then
-    return angle2(center_x - a, center_y + a, ship.x, ship.y)
+    return -1, 1
   end
 
   -- Up Left
   if positive_angle < PI * 5 / 4 then
-    return angle2(center_x - a, center_y - a, ship.x, ship.y)
+    return -1, -1
   end
 
   -- Up Right
-  if positive_angle < PI * 7 / 4 then
-    return angle2(center_x + a, center_y - a, ship.x, ship.y)
+  if positive_angle <= PI * 7 / 4 then
+    return 1, -1
   end
+
+  error ('Angle given out of bounds - ' .. current_angle)
+end
+
+function pilots.square(ship, _)
+  local center = ship.square_state.center
+
+  local current_angle = angle2(ship.x, ship.y, center.x, center.y)
+  local dx, dy = next_square_target(current_angle)
+  local a = ship.square_state.a / 2
+  return angle2(center.x + dx * a, center.y + dy * a, ship.x, ship.y)
 end
 
 return pilots
