@@ -49,6 +49,12 @@ function love.keypressed(key)
     love.event.quit()
   elseif key == "space" then
     ship_factory:toggle_pause()
+  elseif key == "c" then
+    Ship.set_idle(squadron.leader, 100)
+  elseif key == "s" then
+    Ship.set_square_pilot(squadron.leader, 300)
+  elseif key == "m" then
+    squadron.leader.pilot = pilots.manual
   end
 end
 

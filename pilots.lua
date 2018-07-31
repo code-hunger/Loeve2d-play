@@ -58,5 +58,16 @@ function pilots.square(ship, _)
   return utils.angle4(center.x + dx * a, center.y + dy * a, ship.x, ship.y)
 end
 
+function pilots.manual(ship, t)
+  local angle = ship.angle
+  if love.keyboard.isDown("left") then
+    return angle - 0.7 * PI * t
+  end
+  if love.keyboard.isDown("right") then
+    return angle + 0.7 * PI * t
+  end
+  return angle
+end
+
 return pilots
 
