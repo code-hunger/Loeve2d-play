@@ -9,7 +9,7 @@ local function idle(x, y, idle_state, delta_time)
 
   local delta_radius = utils.pytag(center_x, center_y, x, y) - idle_state.radius
 
-  local current_angle = utils.angle2(center_x, center_y,  x, y)
+  local current_angle = utils.angle4(center_x, center_y,  x, y)
   local new_angle = current_angle + delta_time * (5 + 30 * math.abs(delta_radius / idle_state.radius))
 
   local target_x = center_x + idle_state.radius * math.cos(new_angle)
@@ -20,7 +20,7 @@ end
 
 function pilots.idle(ship, t)
   ship.target = idle(ship.x, ship.y, ship.idle_state, t)
-  return utils.angle2(ship.target.x, ship.target.y, ship.x, ship.y)
+  return utils.angle2(ship.target, ship)
 end
 
 local function next_square_target(current_angle)
@@ -52,10 +52,10 @@ end
 function pilots.square(ship, _)
   local center = ship.square_state.center
 
-  local current_angle = utils.angle2(ship.x, ship.y, center.x, center.y)
+  local current_angle = utils.angle2(ship, center)
   local dx, dy = next_square_target(current_angle)
   local a = ship.square_state.a / 2
-  return utils.angle2(center.x + dx * a, center.y + dy * a, ship.x, ship.y)
+  return utils.angle4(center.x + dx * a, center.y + dy * a, ship.x, ship.y)
 end
 
 return pilots

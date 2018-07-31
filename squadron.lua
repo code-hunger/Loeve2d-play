@@ -32,7 +32,7 @@ function squadron:update()
       y = x * math.sin(angle) + y * math.cos(angle) + self.leader.y
     }
 
-    ship.angle = utils.angle2(ship.target.x, ship.target.y, ship.x, ship.y)
+    ship.angle = utils.angle2(ship.target, ship)
   end
 end
 
