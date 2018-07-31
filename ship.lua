@@ -14,8 +14,8 @@ function Ship:draw()
 
   if self.square_state then
     local c = self.square_state.center
-    local a = self.square_state.a / 2
-    love.graphics.rectangle("line", c.x - a, c.y - a, c.x + a, c.y + a )
+    local a = self.square_state.a
+    love.graphics.rectangle("line", c.x - a / 2, c.y - a / 2, a, a)
   end
 
   if self.target then
