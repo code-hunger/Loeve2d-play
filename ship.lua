@@ -1,8 +1,9 @@
 local pilots = require "./pilots"
 local Ship = {}
 
-function Ship:draw()
-  love.graphics.setColor(0.9, 0.2, 0.2)
+function Ship:draw(color)
+  color = color or { 0.9, 0.2, 0.2 }
+  love.graphics.setColor(unpack(color))
   love.graphics.setLineWidth(4)
   love.graphics.circle("line", self.x, self.y, 10)
   if self.idle_state then
@@ -15,6 +16,7 @@ function Ship:draw()
   if self.square_state then
     local c = self.square_state.center
     local a = self.square_state.a
+    love.graphics.setColor(0.5, 0.5, 0.5)
     love.graphics.rectangle("line", c.x - a / 2, c.y - a / 2, a, a)
   end
 
