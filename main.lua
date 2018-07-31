@@ -5,7 +5,7 @@ local Ship = require "./ship"
 
 local squadron = require "./squadron"
 local formations = require "./formations"
-squadron:set_formation(formations.row)
+squadron:set_formation(formations.irow)
 
 local next_ship = 0.5
 local add_squadron_ship

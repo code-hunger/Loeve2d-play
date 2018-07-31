@@ -1,8 +1,8 @@
 local formations = {}
 
-function formations.sine(_, i, leader)
-  return leader.x + 30 * i,
-         leader.y + 30 * math.sin(i * math.pi / 5)
+function formations.sine(_, i)
+  return 30 * i,
+         30 * math.sin(i * math.pi / 5)
 end
 
 function formations.row(ships, i, leader)
@@ -13,11 +13,15 @@ function formations.row(ships, i, leader)
          previous.y + 30 * math.sin(previous.angle)
 end
 
-function formations.circle(radius, arc, ships, i, leader)
+function formations.irow(_, i)
+  return 0, 30 * i
+end
+
+function formations.circle(radius, arc, ships, i)
   local angle = i / #ships * arc + (math.pi * 2 - arc) / 2
 
-  return leader.x + math.sin(angle) * radius,
-         leader.y + math.cos(angle) * radius
+  return math.sin(angle) * radius,
+         math.cos(angle) * radius
 end
 
 return formations

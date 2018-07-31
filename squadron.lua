@@ -3,6 +3,8 @@ local squadron = {
   ships = {};
 }
 
+local utils = require "./utils"
+
 function squadron:add_ship(ship)
   if self.max_ships > 0 and #self.ships >= self.max_ships then
     self:remove_ship()
@@ -22,9 +24,15 @@ end
 function squadron:update()
   local ships = self.ships
   for i, ship in ipairs(ships) do
-    local x, y = self.formation(ships, i, self.leader)
-    ship.target = { x = x, y = y }
-    ship.angle = math.atan2(- y + ship.y, - x + ship.x)
+    local x, y = self.formation(ships, i)
+    local angle = self.leader.angle - math.pi / 2
+
+    ship.target = {
+      x = x * math.cos(angle) - y * math.sin(angle) + self.leader.x,
+      y = x * math.sin(angle) + y * math.cos(angle) + self.leader.y
+    }
+
+    ship.angle = utils.angle2(ship.target.x, ship.target.y, ship.x, ship.y)
   end
 end
 
