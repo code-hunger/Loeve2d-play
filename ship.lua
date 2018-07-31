@@ -49,8 +49,8 @@ function Ship:set_square_pilot(square_a, center)
   self.square_state = {
     a = square_a;
     center = center or {
-      x = 130;
-      y = 130;
+      x = square_a;
+      y = square_a;
     }
   }
   self.pilot = pilots.square
