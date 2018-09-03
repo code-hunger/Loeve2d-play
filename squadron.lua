@@ -32,6 +32,10 @@ function squadron:update(dt)
       y = x * math.sin(angle) + y * math.cos(angle) + self.leader.y
     }
 
+    local dist_to_target = utils.pytag(ship.target.x, ship.target.y, ship.x, ship.y)
+    ship.speed = math.abs(dist_to_target) * dt * self.leader.speed * 1.25
+    if ship.speed > self.leader.speed * 2 then ship.speed = self.leader.speed * 2 end
+
     local requested_angle = utils.angle2(ship.target, ship)
     ship.angle = utils.constrict_rotation(requested_angle, ship.angle, dt)
   end
