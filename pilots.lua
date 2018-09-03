@@ -69,5 +69,17 @@ function pilots.manual(ship, t)
   return angle
 end
 
+function pilots.straight_to_target(ship, target, t)
+  local requested_angle = utils.angle2(target, ship)
+
+  if requested_angle < 0 and ship.angle > requested_angle + math.pi then
+    requested_angle = requested_angle + 2 * math.pi
+  end
+
+  local new_angle = utils.constrict_rotation(requested_angle, ship.angle, t)
+  if new_angle > 2 * math.pi then new_angle = new_angle - 2 * math.pi end
+  return new_angle
+end
+
 return pilots
 

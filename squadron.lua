@@ -3,6 +3,7 @@ local squadron = {
   ships = {};
 }
 
+local pilots = require "./pilots"
 local utils = require "./utils"
 
 function squadron:add_ship(ship)
@@ -36,8 +37,7 @@ function squadron:update(dt)
     ship.speed = math.abs(dist_to_target) * dt * self.leader.speed * 1.25
     if ship.speed > self.leader.speed * 2 then ship.speed = self.leader.speed * 2 end
 
-    local requested_angle = utils.angle2(ship.target, ship)
-    ship.angle = utils.constrict_rotation(requested_angle, ship.angle, dt)
+    ship.angle = pilots.straight_to_target(ship, ship.target, dt)
   end
 end
 
