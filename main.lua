@@ -7,7 +7,7 @@ local squadron = require "./squadron"
 local formations = require "./formations"
 local pilots = require "./pilots"
 squadron:set_formation(function(ships, i)
-  return formations.circle(150, math.pi, ships, i)
+  return formations.circle(50, math.pi, ships, i)
 end)
 
 local next_ship = 0.5
@@ -61,6 +61,13 @@ function love.keypressed(key)
     Ship.set_square_pilot(squadron.leader)
   elseif key == "m" then
     squadron.leader.pilot = pilots.manual
+  end
+end
+
+function love.mousepressed(x, y)
+  if squadron.leader then
+    squadron.leader.mouse_controlled = true
+    squadron.leader.target = { x=x, y=y }
   end
 end
 

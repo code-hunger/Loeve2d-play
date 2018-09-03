@@ -61,10 +61,15 @@ end
 function pilots.manual(ship, t)
   local angle = ship.angle
   if love.keyboard.isDown("left") then
+    ship.mouse_controlled = false
     return angle - 0.7 * PI * t
   end
   if love.keyboard.isDown("right") then
+    ship.mouse_controlled = false
     return angle + 0.7 * PI * t
+  end
+  if ship.mouse_controlled then
+    return pilots.straight_to_target(ship, ship.target, t)
   end
   return angle
 end
