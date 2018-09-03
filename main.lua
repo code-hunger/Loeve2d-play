@@ -58,7 +58,7 @@ function love.keypressed(key)
   elseif key == "c" then
     Ship.set_idle(squadron.leader, 100)
   elseif key == "s" then
-    Ship.set_square_pilot(squadron.leader, 300)
+    Ship.set_square_pilot(squadron.leader)
   elseif key == "m" then
     squadron.leader.pilot = pilots.manual
   end
@@ -73,6 +73,6 @@ function add_squadron_ship()
   else
     ship.speed = ship.speed * 0.4
     squadron.leader = ship
-    Ship.set_square_pilot(ship, 300)
+    Ship.set_square_pilot(ship)
   end
 end
