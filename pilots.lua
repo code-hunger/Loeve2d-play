@@ -82,8 +82,11 @@ function pilots.straight_to_target(ship, target, t)
   end
 
   local new_angle = utils.constrict_rotation(requested_angle, ship.angle, t)
-  if new_angle > 2 * math.pi then new_angle = new_angle - 2 * math.pi end
-  return new_angle
+
+  if new_angle > 2 * math.pi then
+    return new_angle - 2 * math.pi, new_angle - ship.angle
+  end
+  return new_angle, new_angle - ship.angle
 end
 
 return pilots
