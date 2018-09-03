@@ -7,6 +7,10 @@ function Ship:draw(color)
   love.graphics.setColor(unpack(color))
   love.graphics.setLineWidth(4)
   love.graphics.circle("line", self.x, self.y, 10)
+
+  love.graphics.setColor(1, 1, 0)
+  love.graphics.line(self.x, self.y, self.x - math.cos(self.angle) * 10, self.y - math.sin(self.angle) * 10)
+
   if self.idle_state then
     local c = self.idle_state.center
     love.graphics.setLineWidth(1)
