@@ -27,6 +27,9 @@ function love.update(dt)
     local leader = squadron.leader
     leader.angle = leader:pilot(dt)
     leader.x, leader.y = Ship.update(leader, dt)
+
+    if love.keyboard.isDown("down") then leader.speed = leader.speed - 30 * dt end
+    if love.keyboard.isDown("up") then leader.speed = leader.speed + 30 * dt end
   end
 
   fun.each(function(ship)
