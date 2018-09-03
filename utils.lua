@@ -38,6 +38,9 @@ function utils.to_range(x, from, to)
 end
 
 function utils.constrict_rotation(x, old, dt)
+  if x - old > math.pi then old = old + 2 * math.pi end
+  if old - x > math.pi then x = x + 2 * math.pi end
+
   return utils.to_range(x, old - math.pi * dt, old + math.pi * dt)
 end
 
