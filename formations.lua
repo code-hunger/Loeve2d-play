@@ -18,7 +18,12 @@ function formations.irow(_, i)
 end
 
 function formations.circle(radius, arc, ships, i)
-  local angle = i / #ships * arc + (math.pi * 2 - arc) / 2
+  local angle
+  if #ships == 1 then -- for a single ship, (i-1)/(#ships-1) is 0/0
+    angle = math.pi
+  else
+    angle = (i - 1) / (#ships - 1) * arc + math.pi - arc / 2
+  end
 
   return math.sin(angle) * radius,
          math.cos(angle) * radius
