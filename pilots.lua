@@ -55,12 +55,13 @@ function pilots.square(ship, t)
   local current_angle = utils.angle2(ship, center)
   local dx, dy = next_square_target(current_angle)
   local a = ship.square_state.a / 2
-  local target = {
+
+  ship.target = {
     x = center.x + dx * a,
     y = center.y + dy * a
   }
 
-  return pilots.straight_to_target(ship, target, t)
+  return pilots.straight_to_target(ship, ship.target, t)
 end
 
 function pilots.manual(ship, t)
