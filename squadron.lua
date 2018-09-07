@@ -6,6 +6,10 @@ local squadron = {
 local pilots = require "./pilots"
 local utils = require "./utils"
 
+local PI = math.pi
+local PI2 = math.pi ^ 2
+local PI3 = math.pi ^ 3
+
 function squadron:add_ship(ship)
   if self.max_ships > 0 and #self.ships >= self.max_ships then
     self:remove_ship()
@@ -22,6 +26,18 @@ function squadron:set_formation(formation)
   self.formation = formation
 end
 
+local function accel_coeff_by_angle(target_angle_delta)
+  assert(target_angle_delta <= PI and target_angle_delta >= -PI, "Target angle not in range -PI → +PI: " .. utils.deg(target_angle_delta))
+  local x = math.abs(target_angle_delta)
+  return (x / PI - 1) ^ 2
+end
+
+local function rotation_coeff_by_distance(dist_to_target)
+  assert(dist_to_target >= 0, "da")
+  local x = dist_to_target
+  return -1 / (x + 1) + 1
+end
+
 function squadron:update(dt)
   local ships = self.ships
   for i, ship in ipairs(ships) do
@@ -34,10 +50,15 @@ function squadron:update(dt)
     }
 
     local dist_to_target = utils.pytag(ship.target.x, ship.target.y, ship.x, ship.y)
-    ship.speed = math.abs(dist_to_target) * dt * self.leader.speed * 1.25
-    if ship.speed > self.leader.speed * 2 then ship.speed = self.leader.speed * 2 end
+    local allowed_delta, delta_angle = pilots.straight_to_target(ship, ship.target, dt)
 
-    ship.angle = pilots.straight_to_target(ship, ship.target, dt)
+    ship.angle = ship.angle + allowed_delta *
+      rotation_coeff_by_distance(dist_to_target)
+
+    ship.speed = math.abs(dist_to_target) * dt * self.leader.speed *
+      accel_coeff_by_angle(delta_angle)
+
+    if ship.speed > self.leader.speed * 2 then ship.speed = self.leader.speed * 2 end
   end
 end
 

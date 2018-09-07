@@ -65,19 +65,18 @@ function pilots.square(ship, t)
 end
 
 function pilots.manual(ship, t)
-  local angle = ship.angle
   if love.keyboard.isDown("left") then
     ship.mouse_controlled = false
-    return angle - 0.7 * PI * t
+    return -0.7 * PI * t
   end
   if love.keyboard.isDown("right") then
     ship.mouse_controlled = false
-    return angle + 0.7 * PI * t
+    return  0.7 * PI * t
   end
   if ship.mouse_controlled then
     return pilots.straight_to_target(ship, ship.target, t)
   end
-  return angle
+  return 0
 end
 
 function pilots.straight_to_target(ship, target, t)
@@ -88,12 +87,18 @@ function pilots.straight_to_target(ship, target, t)
   end
 
   local new_angle = utils.constrict_rotation(requested_angle, ship.angle, t)
-  local delta_angle = new_angle - ship.angle
 
   if new_angle > 2 * math.pi then
     new_angle = new_angle - 2 * math.pi
   end
-  return new_angle, delta_angle
+
+  local delta_angle = requested_angle - new_angle
+  if delta_angle > math.pi then
+    delta_angle = delta_angle - 2 * math.pi
+  elseif delta_angle < -math.pi then
+    delta_angle = delta_angle  + 2 * math.pi
+  end
+  return new_angle - ship.angle, delta_angle
 end
 
 return pilots
