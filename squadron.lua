@@ -58,7 +58,8 @@ function squadron:update(dt)
     ship.speed = math.abs(dist_to_target) * dt * self.leader.speed *
       accel_coeff_by_angle(delta_angle)
 
-    if ship.speed > self.leader.speed * 2 then ship.speed = self.leader.speed * 2 end
+    local max_speed = self.leader.speed * 2
+    if ship.speed > max_speed then ship.speed = max_speed end
   end
 end
 
