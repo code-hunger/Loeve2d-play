@@ -20,7 +20,7 @@ end
 
 function pilots.idle(ship, t)
   ship.target = idle(ship.x, ship.y, ship.idle_state, t)
-  return utils.angle2(ship.target, ship)
+  return pilots.straight_to_target(ship, ship.target, t)
 end
 
 local function next_square_target(current_angle)
@@ -49,13 +49,18 @@ local function next_square_target(current_angle)
   error ('Angle given out of bounds - ' .. current_angle)
 end
 
-function pilots.square(ship, _)
+function pilots.square(ship, t)
   local center = ship.square_state.center
 
   local current_angle = utils.angle2(ship, center)
   local dx, dy = next_square_target(current_angle)
   local a = ship.square_state.a / 2
-  return utils.angle4(center.x + dx * a, center.y + dy * a, ship.x, ship.y)
+  local target = {
+    x = center.x + dx * a,
+    y = center.y + dy * a
+  }
+
+  return pilots.straight_to_target(ship, target, t)
 end
 
 function pilots.manual(ship, t)
@@ -82,11 +87,12 @@ function pilots.straight_to_target(ship, target, t)
   end
 
   local new_angle = utils.constrict_rotation(requested_angle, ship.angle, t)
+  local delta_angle = new_angle - ship.angle
 
   if new_angle > 2 * math.pi then
-    return new_angle - 2 * math.pi, new_angle - ship.angle
+    new_angle = new_angle - 2 * math.pi
   end
-  return new_angle, new_angle - ship.angle
+  return new_angle, delta_angle
 end
 
 return pilots
