@@ -16,7 +16,9 @@ local add_squadron_ship
 function love.update(dt)
   if next_ship <= 0 then
     next_ship = 0.2
-    add_squadron_ship()
+    if #squadron.ships < 10 then
+      add_squadron_ship()
+    end
   else
     next_ship = next_ship - dt
   end
@@ -25,7 +27,7 @@ function love.update(dt)
 
   if squadron.leader then
     local leader = squadron.leader
-    leader.angle = leader:pilot(dt)
+    leader.angle = leader.angle + leader:pilot(dt)
     leader.x, leader.y = Ship.update(leader, dt)
 
     if love.keyboard.isDown("down") then leader.speed = leader.speed - 30 * dt end
