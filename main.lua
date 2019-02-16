@@ -1,87 +1,43 @@
 local fun = require "fun"
 
-local ship_factory = require "./ship_factory"
 local Ship = require "./ship"
+local utils = require "./utils"
 
-local squadron = require "./squadron"
-local formations = require "./formations"
-local pilots = require "./pilots"
-squadron:set_formation(function(ships, i)
-  return formations.circle(50, math.pi, ships, i)
-end)
+local space = require "./vspace"
+
+function love.load()
+  for i=1,10 do
+    space:add_ship(
+      i,
+      { x=math.random() * space.bounds.x, y=space.bounds.y * math.random() },
+      20,
+      math.random(30, 70))
+  end
+end
 
 local next_ship = 0.5
-local add_squadron_ship
-
 function love.update(dt)
   if next_ship <= 0 then
     next_ship = 0.2
-    if #squadron.ships < 10 then
-      add_squadron_ship()
-    end
   else
     next_ship = next_ship - dt
   end
 
-  squadron:update(dt)
-
-  if squadron.leader then
-    local leader = squadron.leader
-    leader.angle = leader.angle + leader:pilot(dt)
-    leader.x, leader.y = Ship.update(leader, dt)
-
-    if love.keyboard.isDown("down") then leader.speed = leader.speed - 30 * dt end
-    if love.keyboard.isDown("up") then leader.speed = leader.speed + 30 * dt end
-  end
-
   fun.each(function(ship)
-    ship.x, ship.y = Ship.update(ship, dt)
-  end, squadron.ships)
+    ship.location.x, ship.location.y = Ship.update(ship, dt)
+    ship.location = utils.fit_location(space.bounds, ship.location)
+  end, space.ships)
 end
 
 function love.draw()
-  ship_factory:draw()
-
-  if squadron.leader then
-    Ship.draw(squadron.leader, {0.2, 0.2, 0.9})
-  end
-  fun.each(Ship.draw, squadron.ships)
+  fun.each(Ship.draw, space.ships)
 end
 
 function love.keypressed(key)
-  if key == "+" or key == "kp+" then
-    add_squadron_ship()
-  elseif key == "-" or key == "kp-" then
-    squadron:remove_ship()
+  if key == "-" or key == "kp-" then
+    space:remove_ship()
   elseif key == "escape" then
     love.event.quit()
-  elseif key == "space" then
-    ship_factory:toggle_pause()
-  elseif key == "c" then
-    Ship.set_idle(squadron.leader, 100)
-  elseif key == "s" then
-    Ship.set_square_pilot(squadron.leader)
-  elseif key == "m" then
-    squadron.leader.pilot = pilots.manual
   end
 end
 
-function love.mousepressed(x, y)
-  if squadron.leader then
-    squadron.leader.mouse_controlled = true
-    squadron.leader.target = { x=x, y=y }
-  end
-end
-
-function add_squadron_ship()
-  local ship = ship_factory:produce_ship()
-  if not ship then return false end -- no ship produced :(
-
-  if squadron.leader then
-    squadron:add_ship(ship)
-  else
-    ship.speed = ship.speed * 0.4
-    squadron.leader = ship
-    Ship.set_square_pilot(ship)
-  end
-end

@@ -45,4 +45,15 @@ function utils.constrict_rotation(x, old, dt)
   return utils.to_range(x, old - delta_angle, old + delta_angle)
 end
 
+function utils.fit_location(bounds, location)
+  if not bounds then
+    return location
+  end
+
+  return {
+    x = location.x % bounds.x,
+    y = location.y % bounds.y
+  }
+end
+
 return utils
