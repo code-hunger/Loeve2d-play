@@ -30,6 +30,9 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.print("energy available:" .. space.energy_available 
+    .. "\nenergy in use: " .. space.energy_in_use)
+
   fun.each(Ship.draw, space.ships)
 end
 

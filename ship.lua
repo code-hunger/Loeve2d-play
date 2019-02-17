@@ -11,6 +11,9 @@ function Ship:draw(color)
   love.graphics.setColor(1, 1, 0)
   love.graphics.line(l.x, l.y, l.x - math.cos(self.angle) * 10, l.y - math.sin(self.angle) * 10)
 
+  love.graphics.setColor(1,1,1)
+  love.graphics.print("E = " .. self.energy, l.x - 20, l.y)
+
   if self.scan_radius then
     love.graphics.setLineWidth(1)
     love.graphics.setColor(1, 1, 1)
