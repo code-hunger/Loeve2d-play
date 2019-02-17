@@ -10,6 +10,11 @@ function utils.delayed_log(s, dt)
   end
 end
 
+function utils.round(number, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(number * mult + 0.5) / mult
+end
+
 function utils.deg(angle) return angle * 180 / math.pi end
 
 function utils.pytag(x1, y1, x2, y2) return ((x2-x1) ^ 2 + (y2-y1) ^ 2) ^ 0.5 end

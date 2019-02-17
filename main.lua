@@ -1,7 +1,6 @@
 local fun = require "fun"
 
 local Ship = require "./ship"
-local utils = require "./utils"
 
 local space = require "./vspace"
 
@@ -23,14 +22,11 @@ function love.update(dt)
     next_ship = next_ship - dt
   end
 
-  fun.each(function(ship)
-    ship.location.x, ship.location.y = Ship.update(ship, dt)
-    ship.location = utils.fit_location(space.bounds, ship.location)
-  end, space.ships)
+  space:update(dt)
 end
 
 function love.draw()
-  love.graphics.print("energy available:" .. space.energy_available 
+  love.graphics.print("energy available:" .. space.energy_available
     .. "\nenergy in use: " .. space.energy_in_use)
 
   fun.each(Ship.draw, space.ships)

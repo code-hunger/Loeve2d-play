@@ -1,4 +1,5 @@
 local Ship = {}
+local utils = require "./utils"
 
 function Ship:draw(color)
   color = color or { 0.9, 0.2, 0.2 }
@@ -12,7 +13,7 @@ function Ship:draw(color)
   love.graphics.line(l.x, l.y, l.x - math.cos(self.angle) * 10, l.y - math.sin(self.angle) * 10)
 
   love.graphics.setColor(1,1,1)
-  love.graphics.print("E = " .. self.energy, l.x - 20, l.y)
+  love.graphics.print("E = " .. utils.round(self.energy, 1), l.x - 20, l.y)
 
   if self.scan_radius then
     love.graphics.setLineWidth(1)
