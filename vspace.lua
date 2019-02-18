@@ -26,6 +26,7 @@ function Space:add_ship(id, location, energy, scan_radius)
     id = id,
     location = utils.fit_location(self.bounds, location),
     energy = energy,
+    initial_energy = energy,
     scan_radius = scan_radius
     ,speed = 40,angle = math.pi
   }

@@ -20,6 +20,13 @@ function Ship:draw(color)
     love.graphics.setColor(1, 1, 1)
     love.graphics.circle("line", l.x, l.y, self.scan_radius)
   end
+
+  if self.energy then
+    local r = self.energy / (self.initial_energy or 20) * math.pi * 2
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.arc("line", l.x, l.y, self.scan_radius * 0.8, 0,r)
+  end
 end
 
 function Ship:update(delta_time)
