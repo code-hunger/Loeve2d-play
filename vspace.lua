@@ -14,7 +14,7 @@ local Space = {
   end,
 }
 
-function Space:add_ship(id, location, energy, scan_radius)
+function Space:add_ship(id, location, angle, energy, scan_radius)
   if energy > self.energy_available then
     return
   end
@@ -27,8 +27,9 @@ function Space:add_ship(id, location, energy, scan_radius)
     location = utils.fit_location(self.bounds, location),
     energy = energy,
     initial_energy = energy,
-    scan_radius = scan_radius
-    ,speed = 40,angle = math.pi
+    scan_radius = scan_radius,
+    speed = 40,
+    angle = angle
   }
   table.insert(self.ships, ship)
 end
