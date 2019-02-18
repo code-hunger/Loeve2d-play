@@ -10,7 +10,7 @@ local Space = {
   energy_in_use = 0,
   bounds = { x = 800, y = 600 },
   gravity_cost = function (radius) -- what about weight?
-    return 2 ^ radius
+    return radius * 0.02
   end,
 }
 
@@ -33,12 +33,27 @@ function Space:add_ship(id, location, energy, scan_radius)
   table.insert(self.ships, ship)
 end
 
-function Space:update(dt)
-  fun.each(function(ship)
-    ship.location.x, ship.location.y = Ship.update(ship, dt)
-    ship.location = utils.fit_location(self.bounds, ship.location)
-    ship.energy = ship.energy - self.movement_cost * dt * ship.speed
+function Space:draw()
+  love.graphics.print("energy available:" .. self.energy_available
+    .. "\nenergy in use: " .. self.energy_in_use)
+
+  fun.each(Ship.draw, self.ships)
+  fun.each(function (ship)
+    love.graphics.print("Grav cost: " .. 10 * self.gravity_cost(ship.scan_radius), ship.location.x - 40, ship.location.y + 15)
   end, self.ships)
+end
+
+function Space:update(dt)
+  for i,ship in ipairs(self.ships) do
+    ship.energy = ship.energy - self.movement_cost  * dt * ship.speed
+    ship.energy = ship.energy - self.gravity_cost(ship.scan_radius) * dt
+    if ship.energy <= 0 then
+      table.remove(self.ships, i)
+    else
+      ship.location.x, ship.location.y = Ship.update(ship, dt)
+      ship.location = utils.fit_location(self.bounds, ship.location)
+    end
+  end
 end
 
 return Space
