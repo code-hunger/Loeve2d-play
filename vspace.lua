@@ -14,7 +14,7 @@ local Space = {
   end,
 }
 
-function Space:add_ship(id, location, angle, energy, scan_radius)
+function Space:add_ship(id, location, angle, energy, scan_radius, on_collide)
   if energy > self.energy_available then
     return
   end
@@ -27,7 +27,7 @@ function Space:add_ship(id, location, angle, energy, scan_radius)
     location = utils.fit_location(self.bounds, location),
     energy = energy,
     initial_energy = energy,
-    scan = { radius = scan_radius },
+    scan = { radius = scan_radius, on_collide = on_collide },
     speed = 40,
     angle = angle
   }
@@ -45,10 +45,12 @@ function Space:draw()
 
   love.graphics.setLineWidth(3)
   love.graphics.setColor(0,1,0)
-  fun.each(function (col)
-    local a = col[1]
-    local b = col[2]
-    love.graphics.line(a.x, a.y, b.x, b.y)
+  fun.each(function (ship, collisions)
+    local a = ship.location
+    for _,b in ipairs(collisions) do
+      b = b.location
+      love.graphics.line(a.x, a.y, b.x, b.y)
+    end
   end, self.collisions)
 end
 
@@ -66,7 +68,11 @@ function Space:update(dt)
       for j,jhip in ipairs(self.ships) do
         if j ~= i then
           if utils.in_circle(jhip.location, ship.location, ship.scan.radius) then
-            table.insert(self.collisions, {ship.location, jhip.location})
+            if not self.collisions[ship] then
+              self.collisions[ship] = { jhip }
+            else
+              table.insert(self.collisions[ship], jhip)
+            end
             collides = true
           end
         end
