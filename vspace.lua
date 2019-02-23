@@ -42,9 +42,18 @@ function Space:draw()
   fun.each(function (ship)
     love.graphics.print("Grav cost: " .. 10 * self.gravity_cost(ship.scan_radius), ship.location.x - 40, ship.location.y + 15)
   end, self.ships)
+
+  love.graphics.setLineWidth(3)
+  love.graphics.setColor(0,1,0)
+  fun.each(function (col)
+    local a = col[1]
+    local b = col[2]
+    love.graphics.line(a.x, a.y, b.x, b.y)
+  end, self.collisions)
 end
 
 function Space:update(dt)
+  self.collisions = {}
   for i,ship in ipairs(self.ships) do
     ship.energy = ship.energy - self.movement_cost  * dt * ship.speed
     ship.energy = ship.energy - self.gravity_cost(ship.scan_radius) * dt
@@ -53,6 +62,13 @@ function Space:update(dt)
     else
       ship.location.x, ship.location.y = Ship.update(ship, dt)
       ship.location = utils.fit_location(self.bounds, ship.location)
+      for j,jhip in ipairs(self.ships) do
+        if j ~= i then
+          if utils.in_circle(jhip.location, ship) then
+            table.insert(self.collisions, {ship.location, jhip.location})
+          end
+        end
+      end
     end
   end
 end

@@ -61,4 +61,11 @@ function utils.fit_location(bounds, location)
   }
 end
 
+function utils.in_circle(point, circle)
+  local dx = point.x - circle.location.x
+  local dy = point.y - circle.location.y
+
+  return (dx * dx + dy * dy) <= circle.scan_radius * circle.scan_radius
+end
+
 return utils
