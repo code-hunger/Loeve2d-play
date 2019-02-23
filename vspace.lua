@@ -27,7 +27,8 @@ function Space:add_ship(id, location, angle, energy, scan_radius, on_collide)
     location = utils.fit_location(self.bounds, location),
     energy = energy,
     initial_energy = energy,
-    scan = { radius = scan_radius, on_collide = on_collide },
+    scan = { radius = scan_radius },
+    on_collide = on_collide or function () end,
     speed = 40,
     angle = angle
   }
@@ -80,8 +81,12 @@ function Space:update(dt)
 
       local collisions = self:find_collisions(i)
       self.collisions[ship] = collisions
-      if #collisions > 0 then ship.scan.color = 'red'
-      else ship.scan.color = 'white' end
+      if #collisions > 0 then
+        ship.scan.color = 'red'
+        ship:on_collide(collisions)
+      else
+        ship.scan.color = 'white'
+      end
     end
   end
 end

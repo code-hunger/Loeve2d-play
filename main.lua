@@ -1,5 +1,9 @@
 local space = require "./vspace"
 
+local function ship_collide(ship, with)
+  ship.speed = ship.speed +  0.4
+end
+
 local function load_random(count)
   for i=1,count do
     space:add_ship(
@@ -7,7 +11,8 @@ local function load_random(count)
       { x=math.random() * space.bounds.x, y=space.bounds.y * math.random() },
       math.random(0, 2*math.pi),
       20,
-      math.random(30, 70))
+      math.random(30, 70),
+      ship_collide)
   end
 end
 
@@ -19,7 +24,8 @@ local function load_in_circle(count)
       { x = -math.cos(angle) * 150 + 340, y = -math.sin(angle) * 150 + 340 },
       angle + math.pi,
       20,
-      math.random(30, 70))
+      math.random(30, 70),
+      ship_collide)
   end
 end
 
