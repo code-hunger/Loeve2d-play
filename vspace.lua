@@ -55,21 +55,16 @@ function Space:draw()
 end
 
 function Space:find_collisions(ship_i)
-  local collides = false
+  local collisions = {}
   local ship = self.ships[ship_i]
   for j,jhip in ipairs(self.ships) do
     if j ~= ship_i then
       if utils.in_circle(jhip.location, ship.location, ship.scan.radius) then
-        if not self.collisions[ship] then
-          self.collisions[ship] = { jhip }
-        else
-          table.insert(self.collisions[ship], jhip)
-        end
-        collides = true
+        table.insert(collisions, jhip)
       end
     end
   end
-  return collides
+  return collisions
 end
 
 function Space:update(dt)
@@ -82,8 +77,10 @@ function Space:update(dt)
     else
       ship.location.x, ship.location.y = Ship.update(ship, dt)
       ship.location = utils.fit_location(self.bounds, ship.location)
-      local collides = self:find_collisions(i)
-      if collides then ship.scan.color = 'red'
+
+      local collisions = self:find_collisions(i)
+      self.collisions[ship] = collisions
+      if #collisions > 0 then ship.scan.color = 'red'
       else ship.scan.color = 'white' end
     end
   end
