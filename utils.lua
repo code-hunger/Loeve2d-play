@@ -68,4 +68,11 @@ function utils.in_circle(point, circle)
   return (dx * dx + dy * dy) <= circle.scan_radius * circle.scan_radius
 end
 
+function utils.set_color(color)
+  if color == 'red' then love.graphics.setColor(1,0,0)
+  -- white by default
+  else love.graphics.setColor(1,1,1)
+  end
+end
+
 return utils

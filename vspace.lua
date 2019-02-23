@@ -62,13 +62,17 @@ function Space:update(dt)
     else
       ship.location.x, ship.location.y = Ship.update(ship, dt)
       ship.location = utils.fit_location(self.bounds, ship.location)
+      local collides = false
       for j,jhip in ipairs(self.ships) do
         if j ~= i then
           if utils.in_circle(jhip.location, ship) then
             table.insert(self.collisions, {ship.location, jhip.location})
+            collides = true
           end
         end
       end
+      if collides then ship.scan_color = 'red'
+      else ship.scan_color = 'white' end
     end
   end
 end
