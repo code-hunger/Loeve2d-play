@@ -1,7 +1,7 @@
 local space = require "./vspace"
 
-function love.load(arg)
-  for i=1,(arg[1] or 7) do
+local function load_random(count)
+  for i=1,count do
     space:add_ship(
       i,
       { x=math.random() * space.bounds.x, y=space.bounds.y * math.random() },
@@ -9,6 +9,23 @@ function love.load(arg)
       20,
       math.random(30, 70))
   end
+end
+
+local function load_in_circle(count)
+  for i=1,count do
+    local angle = math.pi * 2 * i / count
+    space:add_ship(
+      i,
+      { x = -math.cos(angle) * 150 + 340, y = -math.sin(angle) * 150 + 340 },
+      angle + math.pi,
+      20,
+      math.random(30, 70))
+  end
+end
+
+function love.load(arg)
+  local count = (arg[1] or 7)
+  if arg[2] then load_in_circle(count) else load_random(count) end
 end
 
 local next_ship = 0.5
