@@ -15,17 +15,17 @@ function Ship:draw(color)
   love.graphics.setColor(1,1,1)
   love.graphics.print("E = " .. utils.round(self.energy, 1), l.x - 20, l.y)
 
-  if self.scan_radius then
+  if self.scan then
     love.graphics.setLineWidth(1)
-    utils.set_color(self.scan_color)
-    love.graphics.circle("line", l.x, l.y, self.scan_radius)
+    utils.set_color(self.scan.color)
+    love.graphics.circle("line", l.x, l.y, self.scan.radius)
   end
 
   if self.energy then
     local r = self.energy / (self.initial_energy or 20) * math.pi * 2
     love.graphics.setLineWidth(1)
     love.graphics.setColor(0.4, 0.4, 0.4)
-    love.graphics.arc("line", l.x, l.y, self.scan_radius * 0.8, math.pi + self.angle,r + self.angle + math.pi)
+    love.graphics.arc("line", l.x, l.y, (self.scan.radius or 20) * 0.8, math.pi + self.angle,r + self.angle + math.pi)
   end
 end
 
