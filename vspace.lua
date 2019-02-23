@@ -6,11 +6,11 @@ local Space = {
   ships = {},
   time_speed = 1,
   movement_cost = 0.01, -- per time per unit
-  energy_available = 1000,
+  energy_available = 10000,
   energy_in_use = 0,
   bounds = { x = 800, y = 600 },
   gravity_cost = function (radius) -- what about weight?
-    return radius * 0.01
+    return radius * 0.1
   end,
 }
 
@@ -29,7 +29,7 @@ function Space:add_ship(id, location, angle, energy, scan_radius, on_collide)
     initial_energy = energy,
     scan = { radius = scan_radius },
     on_collide = on_collide or function () end,
-    speed = 40,
+    speed = 100,
     angle = angle
   }
   table.insert(self.ships, ship)
@@ -41,7 +41,10 @@ function Space:draw()
 
   fun.each(Ship.draw, self.ships)
   fun.each(function (ship)
-    love.graphics.print("Grav cost: " .. 10 * self.gravity_cost(ship.scan.radius), ship.location.x - 40, ship.location.y + 15)
+    if ship.scan.radius > 0 then
+      love.graphics.print("Grav cost: " .. 10 * self.gravity_cost(ship.scan.radius),
+        ship.location.x - 40, ship.location.y + 15)
+    end
   end, self.ships)
 
   love.graphics.setLineWidth(3)

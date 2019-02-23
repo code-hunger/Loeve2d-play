@@ -6,8 +6,8 @@ function Ship:draw(color)
   local l = self.location
 
   love.graphics.setColor(unpack(color))
-  love.graphics.setLineWidth(4)
-  love.graphics.circle("line", l.x, l.y, 10)
+  love.graphics.setLineWidth(3)
+  love.graphics.circle("line", l.x, l.y, 5)
 
   love.graphics.setColor(1, 1, 0)
   love.graphics.line(l.x, l.y, l.x - math.cos(self.angle) * 10, l.y - math.sin(self.angle) * 10)
@@ -31,7 +31,7 @@ end
 
 function Ship:update(delta_time)
   return self.location.x - delta_time * self.speed * math.cos(self.angle),
-  self.location.y - delta_time * self.speed * math.sin(self.angle)
+         self.location.y - delta_time * self.speed * math.sin(self.angle)
 end
 
 return Ship
