@@ -78,29 +78,26 @@ end
 
 Space.instructions = {}
 
-function Space.instructions:acquire (ship_list, collisions)
-  for _,i in ipairs(ship_list) do
+function Space.instructions:acquire (ship, ship_list, collisions)
+  if #ship_list < 1 then return end
+
+  for _,ship_i in ipairs(ship_list) do
     for id,v in ipairs(self.ships) do
-      if v == collisions[i] then
+      if v == collisions[ship_i] then
         table.remove(self.ships, id)
       end
     end
   end
 end
 
-function Space.instructions:deploy (ship, collisions)
-  if type(ship) == "table" then
-    for _,s in ipairs(ship) do
-      self.instructions.deploy(self, s, collisions)
-    end
-    return
-  end
+function Space.instructions:deploy (ship, deploy_list, collisions)
+  assert(type(deploy_list == 'table'))
 end
 
-function Space:run_instructions(instructions, collisions)
-  for k,v in pairs(instructions or {}) do
+function Space:notify_collisions(ship, collisions)
+  for k,v in pairs(ship:on_collide(collisions) or {}) do
     assert(type(k) == 'string')
-    self.instructions[k](self, v, collisions)
+    self.instructions[k](self, ship, v, collisions)
   end
 end
 
@@ -120,7 +117,7 @@ function Space:update(dt)
       self.collisions[ship] = collisions
       if #collisions > 0 then
         ship.scan.color = 'red'
-        self:run_instructions(ship:on_collide(collisions), collisions)
+        self:notify_collisions(ship, collisions)
       else
         ship.scan.color = 'white'
       end
