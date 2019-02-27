@@ -66,10 +66,10 @@ function setup:mixed(count)
     0,
     get_some_func_conf())
 
-  for i=3,count do
-    local angle = math.pi * (i - 2) / (count - 2) - math.pi / 2
+  for i=1,count do
+    local angle = math.pi * (i-1) / (count-1) - math.pi / 2
     self:add_ship(
-      i,
+      #self.ships + i,
       { x = math.cos(angle) * 250 + 340, y = math.sin(angle) * 250 + 300 },
       50,
       math.pi+angle,
