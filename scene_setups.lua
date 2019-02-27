@@ -6,11 +6,12 @@ local setup = {}
 local function get_some_func_conf()
   local conf = ship_types.Func.init({'N', 'N'},
     function(a,b)
+      assert(a.conf.typename == 'N')
+      assert(b.conf.typename == 'N')
       return {
         deploy = {
           { typename = 'N', id = a.id + b.id }
-        },
-        acquire = { 1, 2 }
+        }
       }
     end)
 
