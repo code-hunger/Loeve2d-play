@@ -51,4 +51,30 @@ function setup:circle(count)
   end
 end
 
+function setup:mixed(count)
+  self:add_ship(
+    1,
+    { x = 450, y = 300 },
+    300,
+    math.pi,
+    get_some_func_conf())
+
+  self:add_ship(
+    2,
+    { x = 150, y = 300 },
+    300,
+    0,
+    get_some_func_conf())
+
+  for i=3,count do
+    local angle = math.pi * (i - 2) / (count - 2) - math.pi / 2
+    self:add_ship(
+      i,
+      { x = math.cos(angle) * 250 + 340, y = math.sin(angle) * 250 + 300 },
+      50,
+      math.pi+angle,
+      ship_types.N)
+  end
+end
+
 return setup
