@@ -75,4 +75,8 @@ function utils.set_color(color)
   end
 end
 
+function utils.merge(a, b)
+  for k,v in pairs(b) do a[k] = v end
+end
+
 return utils
