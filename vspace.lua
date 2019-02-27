@@ -114,8 +114,6 @@ function Space:update(dt)
       table.remove(self.ships, i)
     else
       ship.location.x, ship.location.y = Ship.update(ship, dt)
-      local eps = (1 - 2*(i % 2))
-      ship.angle = ship.angle + eps * dt * math.pi / 10
       ship.location = utils.fit_location(self.bounds, ship.location)
 
       local collisions = self:find_collisions(i)
