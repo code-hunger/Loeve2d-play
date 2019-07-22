@@ -79,4 +79,42 @@ function utils.merge(a, b)
   for k,v in pairs(b) do a[k] = v end
 end
 
+function utils.tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
+-- Thanks to @hashmal - https://gist.github.com/hashmal/874792
+-- Print contents of `tbl`, with indentation.
+-- `indent` sets the initial level of indentation.
+function utils.tprint (tbl, indent)
+  if not indent then indent = 0 end
+  for k, v in pairs(tbl) do
+    local formatting = string.rep("  ", indent) .. k .. ": "
+    if type(v) == "table" then
+      print(formatting)
+      utils.tprint(v, indent+1)
+    else
+      if type(v) == "function" then print(formatting .. "Function")
+        print(formatting .. v)
+      end
+    end
+  end
+end
+
+function utils.tprint2 (s, l, i) -- recursive Print (structure, limit, indent)
+  l = (l) or 100; i = i or "";	-- default item limit, indent string
+  if (l<1) then print "ERROR: Item limit reached."; return l-1 end;
+  local ts = type(s);
+  if (ts ~= "table") then print (i,ts,s); return l-1 end
+  --print (i,ts);           -- print "table"
+  print (i);           -- print "table"
+  for k,v in pairs(s) do  -- print "[KEY] VALUE"
+    l = utils.tprint2(v, l, i.."\t["..tostring(k).."]");
+    if (l < 0) then break end
+  end
+  return l
+end
+
 return utils

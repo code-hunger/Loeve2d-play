@@ -45,23 +45,29 @@ ship_types.Func = {
       end
     end
 
+    local flag = false
+
     for id,other_ship in ipairs(with) do
-      for _,j in ipairs(params) do
+      assert(other_ship ~= ship, "Collides with itself")
+      for i,j in ipairs(params) do
         if (not other_ship.used) and (other_ship.conf.typename == ship.conf.parameters[j]) then
+          if not flag then print("NEW") end
+          flag = true
+          print("Acquires " .. id)
           table.insert(acquired, id)
           ship.conf.cargo[j] = other_ship
           other_ship.used = true
+          table.remove(params, i)
         end
       end
     end
 
     assert(#ship.conf.cargo <= #ship.conf.parameters)
 
-    local instr = {  acquire = acquired }
+    local instr = { acquire = acquired }
 
     if #ship.conf.cargo == #ship.conf.parameters then
       assert(#acquired > 0)
-      print("COLLECTED!! OPERATOR" .. #ship.conf.cargo)
       utils.merge(instr, ship.conf.operator(unpack(ship.conf.cargo)))
       ship.conf.cargo = {}
     end

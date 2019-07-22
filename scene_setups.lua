@@ -4,13 +4,15 @@ local utils = require "./utils"
 local setup = {}
 
 local function get_some_func_conf()
-  local conf = ship_types.Func.init({'N', 'N'},
-    function(a,b)
+  local conf = ship_types.Func.init({'N', 'N', 'Func'},
+    function(a,b,c)
       assert(a.conf.typename == 'N')
       assert(b.conf.typename == 'N')
+      --assert(c.conf.typename == 'Func')
+      print("OPERATOR!")
       return {
         deploy = {
-          { typename = 'N', id = a.id + b.id }
+          { typename = 'N', id = a.id + b.id, energy = 50 }
         }
       }
     end)
@@ -24,9 +26,9 @@ end
 function setup:random(count)
   for i=1,count do
     local conf
-    if math.random(4) == 1 then
+    if math.random(6) == 1 then
       conf = get_some_func_conf()
-      conf.radius = math.random(20, 50)
+      conf.radius = math.random(20, 70)
     else
       conf = ship_types.N
     end
